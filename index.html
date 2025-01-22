@@ -43,30 +43,33 @@
 
       // Change text color and handle date selection
       dateInput.addEventListener("change", () => {
-        const selectedDate = new Date(dateInput.value);
-        const minDate = new Date(dateInput.min);
+        // Use a slight delay to ensure the value is updated
+        setTimeout(() => {
+          const selectedDate = new Date(dateInput.value);
+          const minDate = new Date(dateInput.min);
 
-        if (selectedDate < minDate) {
-          // Send error message to Thunkable
-          ThunkableWebviewerExtension.postMessage(
-            JSON.stringify({ type: "error", message: "Please select a date that is today or later." })
-          );
+          if (selectedDate < minDate) {
+            // Send error message to Thunkable
+            ThunkableWebviewerExtension.postMessage(
+              JSON.stringify({ type: "error", message: "Please select a date that is today or later." })
+            );
 
-          // Reset to today's date and default color
-          dateInput.value = formattedToday;
-          dateInput.style.color = "#757575";
-        } else {
-          // Change text color to black for valid dates
-          dateInput.style.color = "#000000";
+            // Reset to today's date and default color
+            dateInput.value = formattedToday;
+            dateInput.style.color = "#757575";
+          } else {
+            // Change text color to black for valid dates
+            dateInput.style.color = "#000000";
 
-          // Format date as "Jan 22, 2025"
-          const formattedDate = formatDate(selectedDate);
+            // Format date as "Jan 22, 2025"
+            const formattedDate = formatDate(selectedDate);
 
-          // Send formatted date to Thunkable
-          ThunkableWebviewerExtension.postMessage(
-            JSON.stringify({ type: "dateSelected", date: formattedDate })
-          );
-        }
+            // Send formatted date to Thunkable
+            ThunkableWebviewerExtension.postMessage(
+              JSON.stringify({ type: "dateSelected", date: formattedDate })
+            );
+          }
+        }, 0);
       });
     </script>
   </body>
