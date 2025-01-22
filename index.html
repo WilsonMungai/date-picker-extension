@@ -18,7 +18,7 @@
         width: 150px; 
         height: 55px; 
         text-align: left; 
-        padding-left: 35px;
+        padding-left: 10px;
         border: none;" 
     />
 
@@ -34,6 +34,12 @@
 
       dateInput.min = formattedToday; // Minimum date
       dateInput.value = formattedToday; // Default date
+
+      // Function to format date as "Jan 22, 2025"
+      const formatDate = (date) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Intl.DateTimeFormat('en-US', options).format(date);
+      };
 
       // Change text color and handle date selection
       dateInput.addEventListener("change", () => {
@@ -53,9 +59,12 @@
           // Change text color to black for valid dates
           dateInput.style.color = "#000000";
 
-          // Send valid date to Thunkable
+          // Format date as "Jan 22, 2025"
+          const formattedDate = formatDate(selectedDate);
+
+          // Send formatted date to Thunkable
           ThunkableWebviewerExtension.postMessage(
-            JSON.stringify({ type: "dateSelected", date: dateInput.value })
+            JSON.stringify({ type: "dateSelected", date: formattedDate })
           );
         }
       });
